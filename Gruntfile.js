@@ -34,7 +34,9 @@ module.exports = function(grunt) {
             zip: false,
             macIcns: 'icons/icon.icns',
             macPlist: {
-                'CFBundleIdentifier': 'IDENTIFY'
+                'CFBundleIdentifier': '',//Identifier HERE
+                'CFBundleInfoDictionaryVersion': '1.0',
+                'CFBundleShortVersionString': '1.0',
             },
             winIco: 'icons/icon.ico'
         },
@@ -82,7 +84,7 @@ module.exports = function(grunt) {
                     stdout: true
                 },
                 command: [
-                    'export IDENTITY=SOME KEY',
+                    'export IDENTITY=',//KEY HERE
                     'export PARENT_PLIST=~/Jscode/nw_example/mas/parent.plist',
                     'export CHILD_PLIST=~/Jscode/nw_example/mas/child.plist',
                     'export APP_PATH=~/Jscode/nw_example/build/MyApp/osx64/MyApp.app',
@@ -95,16 +97,25 @@ module.exports = function(grunt) {
                     stdout: true
                 },
                 command: [
-                    'export IDENTITY=SOME KEY',
+                    'export IDENTITY=',//KEY HERE
                     'export APP_NAME=MyApp',
-                    'export APP_PATH=~/Jscode/nw_example/build/MyApp/osx64/',
+                    'export APP_DIR=~/Jscode/nw_example/build/MyApp/osx64/',
                     'cd $APP_DIR && productbuild --component "$APP_NAME.app" /Applications --sign $IDENTITY "$APP_NAME.pkg"'
                 ].join('&&')
             },
         },
+        nwjs: {
+            osx64: osxBuildOpts,
+            win64: win64BuildOpts,
+            win32: win32BuildOpts,
+            linux32: linux32BuildOpts,
+            linux64: linux64BuildOpts
+
+        }
     });
 
     grunt.loadTasks('tasks');
+    grunt.loadNpmTasks('grunt-shell');
 
     grunt.task.registerTask('deploy_and_build', [
         'nwjs:osx64',
